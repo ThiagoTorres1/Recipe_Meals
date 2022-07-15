@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'utils/app_routes.dart';
+import 'screens/initial_page.dart';
+import 'models/meal.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
+
+  List<Meal> _favoriteMeals = [];
 
   @override
   Widget build(BuildContext context) {
@@ -16,33 +21,18 @@ class MyApp extends StatelessWidget {
               primary: Colors.pink,
               secondary: Colors.amber,
             ),
+        fontFamily: 'Raleway',
         canvasColor: Color.fromRGBO(255, 254, 229, 1),
         textTheme: ThemeData().textTheme.copyWith(
               headline6: const TextStyle(
                 fontSize: 20,
+                fontFamily: 'RobotoCondensed',
               ),
             ),
       ),
-      home: Home(),
-    );
-  }
-}
-
-class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
-
-  @override
-  State<Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Vamos Cozinhar?"),
-      ),
-      body: Center(child: Text("Alo!")),
+      routes: {
+        AppRoutes.HOME: (ctx) => InitialPage(),
+      },
     );
   }
 }
