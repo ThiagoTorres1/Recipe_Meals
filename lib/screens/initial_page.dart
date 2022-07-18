@@ -16,7 +16,7 @@ class _InitialPageState extends State<InitialPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Center(
-          child: Text("Categorias?"),
+          child: Text("Categorias"),
         ),
       ),
       body: GridView(
