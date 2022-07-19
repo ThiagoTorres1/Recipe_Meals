@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:meals/components/category_page.dart';
-import '../data/dummy_data.dart';
-import '../components/category_page.dart';
+import 'package:meals/screens/category_screen.dart';
+import '../components/main_drawer.dart';
 
 class InitialPage extends StatefulWidget {
   const InitialPage({Key? key}) : super(key: key);
@@ -11,25 +10,50 @@ class InitialPage extends StatefulWidget {
 }
 
 class _InitialPageState extends State<InitialPage> {
+  int _selectedScreenIndex = 0;
+  List<Widget>? _screens;
+  List<String>? _titles;
+
+  @override
+  void initState() {
+    super.initState();
+    _titles = ['Lista de Categorias', 'Meus Favoritos'];
+
+    _screens = [
+      CategoryScreen(),
+    ];
+  }
+
+  _selectScreen(int index) {
+    setState(() {
+      _selectedScreenIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(
-          child: Text("Categorias"),
-        ),
+        title: Text(_titles![_selectedScreenIndex]),
       ),
-      body: GridView(
-        padding: const EdgeInsets.all(25),
-        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 200,
-          childAspectRatio: 3 / 2,
-          crossAxisSpacing: 20,
-          mainAxisSpacing: 20,
-        ),
-        children: DUMMY_CATEGORIES.map((cat) {
-          return CategoryPage(category: cat);
-        }).toList(),
+      drawer: MainDrawer(),
+      body: _screens![_selectedScreenIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: _selectScreen,
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        unselectedItemColor: Colors.white,
+        selectedItemColor: Theme.of(context).colorScheme.secondary,
+        currentIndex: _selectedScreenIndex,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.category),
+            label: 'Categorias',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.star),
+            label: 'Favoritos',
+          ),
+        ],
       ),
     );
   }
