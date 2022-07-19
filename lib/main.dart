@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:meals/data/dummy_data.dart';
+import 'package:meals/models/settings.dart';
 import 'package:meals/screens/category_meals_page.dart';
 import 'package:meals/screens/meal_detail_screen.dart';
+import 'package:meals/screens/settings_screen.dart';
 import 'utils/app_routes.dart';
 import 'screens/initial_page.dart';
 import 'models/meal.dart';
@@ -18,9 +20,26 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  Settings settings = Settings();
   List<Meal> _favoriteMeals = [];
-
   List<Meal> _availableMeals = DUMMY_MEALS;
+
+  void _filterMeals(Settings settings) {
+    setState(() {
+      this.settings = settings;
+      _availableMeals = DUMMY_MEALS.where((meal) {
+        final filterGluten = settings.isGlutenFree && !meal.isGlutenFree;
+        final filterLactose = settings.isLactoseFree && !meal.isLactoseFree;
+        final filterVegan = settings.isVegan && !meal.isVegan;
+        final filterVegetarian = settings.isVegetarian && !meal.isVegetarian;
+
+        return !filterGluten &&
+            !filterLactose &&
+            !filterVegan &&
+            !filterVegetarian;
+      }).toList();
+    });
+  }
 
   void _toggleFavorite(Meal meal) {
     setState(() {
@@ -58,6 +77,8 @@ class _MyAppState extends State<MyApp> {
             CategoriesMeals(meals: _availableMeals),
         AppRoutes.MEAL_DETAIL: (ctx) => MealDetailScreen(
             isFavorite: _isFavorite, onToggleFavorite: _toggleFavorite),
+        AppRoutes.SETTINGS: (ctx) =>
+            SettingScreen(settings: settings, onSettingsChanged: _filterMeals),
       },
     );
   }
