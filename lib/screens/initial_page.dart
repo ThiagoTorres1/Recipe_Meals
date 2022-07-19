@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:meals/screens/category_screen.dart';
+import 'package:meals/screens/favorite_screen.dart';
 import '../components/main_drawer.dart';
+import '../models/meal.dart';
 
 class InitialPage extends StatefulWidget {
-  const InitialPage({Key? key}) : super(key: key);
+  final List<Meal>? favoriteMeals;
+  const InitialPage({Key? key, this.favoriteMeals}) : super(key: key);
 
   @override
   State<InitialPage> createState() => _InitialPageState();
@@ -21,6 +24,7 @@ class _InitialPageState extends State<InitialPage> {
 
     _screens = [
       CategoryScreen(),
+      FavoriteScreen(favoriteMeals: widget.favoriteMeals),
     ];
   }
 
